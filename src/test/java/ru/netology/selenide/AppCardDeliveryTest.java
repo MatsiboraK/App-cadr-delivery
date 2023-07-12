@@ -19,6 +19,7 @@ public class AppCardDeliveryTest {
     @Test
     void shouldOrderCard() {
         open("http://localhost:7777");
+        String planningDate = generateDate(3, "dd.MM.yyyy");
 
         $("[data-test-id='city'] input").setValue("Иркутск");
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
@@ -28,6 +29,9 @@ public class AppCardDeliveryTest {
         $("[data-test-id='agreement']").click();
         $(withText("Забронировать")).click();
         $("[data-test-id=notification]").shouldBe(visible, Duration.ofSeconds(15));
+        $(".notification__content")
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + planningDate),Duration.ofSeconds(15))
+                .shouldBe(visible);
     }
 
 }
